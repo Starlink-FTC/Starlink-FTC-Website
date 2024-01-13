@@ -1,4 +1,5 @@
-import { Canvas } from "@react-three/fiber";
+import * as THREE from 'three'
+import { Canvas,useFrame } from "@react-three/fiber";
 import { Suspense, useEffect, useRef, useState } from "react";
 
 import sakura from "../assets/sakura.mp3";
@@ -32,10 +33,10 @@ const Home = () => {
     // If screen width is less than 768px, adjust the scale and position
     if (window.innerWidth < 768) {
       screenScale = [1.5, 1.5, 1.5];
-      screenPosition = [0, -1.5, 0];
+      screenPosition = [0, -10.5, 0];
     } else {
-      screenScale = [3, 3, 3];
-      screenPosition = [0, -4, -4];
+      screenScale = [15, 15, 15];
+      screenPosition = [30, 0, 0];
     }
 
     return [screenScale, screenPosition];
@@ -46,10 +47,10 @@ const Home = () => {
 
     if (window.innerWidth < 768) {
       screenScale = [0.27, 0.27, 0.27];
-      screenPosition = [0, 0, -40];
+      screenPosition = [0, 0, 0];
     } else {
       screenScale = [0.3, 0.3, 0.3];
-      screenPosition = [0, 0, -40];
+      screenPosition = [0, 0, 0];
     }
 
     return [screenScale, screenPosition];
@@ -57,6 +58,14 @@ const Home = () => {
 
   const [biplaneScale, biplanePosition] = adjustBiplaneForScreenSize();
   const [islandScale, islandPosition] = adjustIslandForScreenSize();
+
+  const PointCam = () => {
+    useFrame((state) => {
+      state.camera?.lookAt(new THREE.Vector3(biplanePosition[0], biplanePosition[1], biplanePosition[2]))
+      state.camera.updateProjectionMatrix()
+    });
+    return null
+  }
 
   return (
     <section className='w-full h-screen relative'>
@@ -68,7 +77,7 @@ const Home = () => {
         className={`w-full h-screen bg-transparent ${
           isRotating ? "cursor-grabbing" : "cursor-grab"
         }`}
-        camera={{ near: 0.1, far: 1000 }}
+        camera={{ near: 0.1, far: 1000, position: [60,10,0]}}
       >
         <Suspense fallback={<Loader />}>
           <directionalLight position={[1, 1, 1]} intensity={2} />
@@ -80,6 +89,8 @@ const Home = () => {
             penumbra={1}
             intensity={2}
           />
+        <PointCam/>
+
           <hemisphereLight
             skyColor='#b1e1ff'
             groundColor='#000000'
@@ -93,7 +104,7 @@ const Home = () => {
             setIsRotating={setIsRotating}
             setCurrentStage={setCurrentStage}
             position={islandPosition}
-            rotation={[0.1, 4.7077, 0]}
+            rotation={[0, 0, 0]}
             scale={islandScale}
           />
           <Plane

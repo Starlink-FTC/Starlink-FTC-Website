@@ -16,6 +16,10 @@ export default {
         },
         blue: {
           500: "#2b77e7"
+        },
+        purple: {
+          500: "#7209B7",
+          400: "#B5179E"
         }
       },
       fontFamily: {

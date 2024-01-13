@@ -71,13 +71,13 @@ const { actions } = useAnimations(animations, islandRef);
       const delta = (clientX - lastX.current) / viewport.width;
 
       // Update the island's rotation based on the mouse/touch movement
-      islandRef.current.rotation.y += delta * 0.003 * Math.PI;
+      islandRef.current.rotation.y += delta * 0.03 * Math.PI;
 
       // Update the reference for the last clientX position
       lastX.current = clientX;
 
       // Update the rotation speed
-      rotationSpeed.current = delta * 0.003 * Math.PI;
+      rotationSpeed.current = delta * 0.03 * Math.PI;
     }
   };
 
@@ -160,7 +160,9 @@ const { actions } = useAnimations(animations, islandRef);
        *     circle in radians.
        */
       const normalizedRotation =
-        ((rotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+        ((rotation % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)/(2 * Math.PI);
+
+      console.log(normalizedRotation);
 
       // Set the current stage based on the island's orientation
       switch (true) {
